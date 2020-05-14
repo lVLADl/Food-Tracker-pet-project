@@ -14,7 +14,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $faker = Faker\Factory::create();
+    $faker->addProvider(new \FakerRestaurant\Provider\en_US\Restaurant($faker)); // meal-provider
+
+    $user = \App\Models\User::find(1);
+    return response()->json(\App\Models\Meal::select('*')->whereDate('created_at', '=', \Illuminate\Support\Carbon::yesterday()->toDateString())->get());
+    return $user->created_at->eq(\Carbon\Carbon::yesterday()->toDateString()) ? 'true':'false';
+    return response()->json($user->created_at->lt(\Carbon\Carbon::today()));
 });
 
 Auth::routes();
