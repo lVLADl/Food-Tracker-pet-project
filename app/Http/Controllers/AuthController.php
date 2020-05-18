@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use PhpParser\Node\Expr\Cast\Object_;
+use Illuminate\Http\JsonResponse;
 
 class AuthController extends BaseController
 {
@@ -18,6 +17,7 @@ class AuthController extends BaseController
     }
 
     /**
+     * @return JsonResponse
      * Get a JWT via given credentials.
      */
     public function login()
@@ -33,29 +33,36 @@ class AuthController extends BaseController
     /**
      * Get the authenticated User.
      *
-     * @return Object
+     * @return array
      */
     public function me()
     {
-        return $this->auth->user();
+        $user = $this->auth->user();
+        $out = [
+            'name' => $user->name,
+            'email' => $user->email,
+            'is_admin' => $user->hasRole('Admin')
+        ];
+
+        return $out;
     }
 
     /**
      * Log the user out (Invalidate the token).
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return array
      */
     public function logout()
     {
         auth()->logout();
 
-        return response()->json(['message' => 'Successfully logged out']);
+        return ['message' => 'Successfully logged out'];
     }
 
     /**
      * Refresh a token.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return array
      */
     public function refresh()
     {
@@ -67,14 +74,14 @@ class AuthController extends BaseController
      *
      * @param  string $token
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return array
      */
     protected function respondWithToken($token)
     {
-        return response()->json([
+        return [
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
-        ]);
+        ];
     }
 }

@@ -21,8 +21,7 @@ $api->version('v1', function(\Dingo\Api\Routing\Router $api) {
     $api->group([], function (\Dingo\Api\Routing\Router $api) {
         $api->any('/', ['as' => 'p', 'uses' => 'App\Http\Controllers\UserController@getMealPlan']);
     });
-    $api->get('/admin', function () {
-    });
+    $api->get('/admin', function () {});
     $api->group([], function (\Dingo\Api\Routing\Router $api) {
         $api->post('/auth/login', 'App\Http\Controllers\AuthController@login')->name('login');
         $api->post('/auth/logout', 'App\Http\Controllers\AuthController@logout')->name('logout');
