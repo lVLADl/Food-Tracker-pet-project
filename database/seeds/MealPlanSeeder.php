@@ -21,7 +21,7 @@ class MealPlanSeeder extends Seeder
             'age' => 18,
             'activity_rate' => MealPlan::$COEFFICIENTS['XL'],
             'calories_change' => 20,
-            'user_id' => \App\Models\User::all()->where('email', 'user@gmail.com')
+            'user_id' => \App\Models\User::all()->where('email', 'user@gmail.com')->first()->id
         ]);
         # factory(App\Models\MealPlan::class, 1)->create();
         /* foreach (\Illuminate\Support\Facades\DB::select(\Illuminate\Support\Facades\DB::raw("SELECT id FROM USERS WHERE ID NOT IN (SELECT USER_ID FROM MEAL_PLANS)")) as $user)

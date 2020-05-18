@@ -6,5 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Dish extends Model
 {
-    //
+    # Scopes
+    public function scopeL($query) {
+        return $query;
+    }
+    public function scopeApproved($query, bool $isApproved = true) {
+        return $query->where('is_approved', (int) $isApproved);
+    }
 }

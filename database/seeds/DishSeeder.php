@@ -20,8 +20,9 @@ class DishSeeder extends Seeder
             ['Toast', 242, 8.1, 1.0, 48.8, ],
             ['Boiled chicken', 170, 25.2, 7.4, 0, ],
         ];
+        $dishes = [];
         foreach ($m as $m_arr) {
-            Meal::create([
+            $dishes[] = \App\Models\Dish::create([
                 'title' => $m_arr[0],
                 'calories' => $m_arr[1],
                 'proteins' => $m_arr[2],

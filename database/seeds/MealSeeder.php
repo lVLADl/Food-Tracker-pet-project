@@ -11,8 +11,15 @@ class MealSeeder extends Seeder
      */
     public function run()
     {
-        $index = 1;
-        $user = \App\Models\User::all()->where('email', 'user@gmail.com')->first();
-        \App\Models\Meal::select('*')->whereDate('created_at', '=', \Illuminate\Support\Carbon::today()->toDateString())->get();
+        $user_id = \App\Models\User::all()->where('email', 'user@gmail.com')->first()->id;
+        $titles = ['Rice', 'Toast', 'Boiled chicken'];
+        $query = \App\Models\Dish::all();
+        foreach ($titles as $title) {
+            $dish_id = $query->where('title', $title)->first()->id;
+            \App\Models\Meal::create([
+                'dish_id' => $dish_id,
+                'user_id' => $user_id
+            ]);
+        }
     }
 }

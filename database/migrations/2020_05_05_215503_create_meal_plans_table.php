@@ -23,7 +23,7 @@ class CreateMealPlansTable extends Migration
             $table->float('calories_change')->comment('in percents');
 
             $table->unsignedBigInteger('user_id')->primary();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
