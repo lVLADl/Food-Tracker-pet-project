@@ -32,6 +32,6 @@ class DishUpdateRequest extends FormRequest
      * @return array
      */
     public function failedValidation(Validator $validator) {
-        throw new UpdateResourceFailedException('Could not create new user.', $validator->errors());
+        throw new UpdateResourceFailedException('Updating existing dish was unsuccessful due to problems with information.', $validator->errors());
     }
 }

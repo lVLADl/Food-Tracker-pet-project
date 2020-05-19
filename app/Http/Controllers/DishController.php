@@ -22,13 +22,17 @@ class DishController extends BaseController
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of all the approved dishes.
      *
-     * @return \Illuminate\Http\Response
+     * @return Dish
      */
     public function index()
     {
-        return Dish::approved()->get();
+        if($this->auth->user()->hasRole('Admin')) {
+            return Dish::all();
+        } else {
+            return Dish::approved()->get();
+        }
     }
 
     /**

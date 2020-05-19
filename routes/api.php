@@ -19,16 +19,16 @@ $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', function(\Dingo\Api\Routing\Router $api) {
     $api->group([], function (\Dingo\Api\Routing\Router $api) {
-        $api->post('/dishes', 'App\Http\Controllers\DishController@store'); # store
-        $api->get('/dishes', 'App\Http\Controllers\DishController@index'); # index
-        $api->get('/dishes/{dish}', 'App\Http\Controllers\DishController@show'); # show
-        $api->put('/dishes/{dish}', 'App\Http\Controllers\DishController@update'); # update
-        $api->delete('/dishes/{dish}', 'App\Http\Controllers\DishController@destroy'); # delete
-        $api->get('/dishes/{dish}/approve', 'App\Http\Controllers\DishController@approve'); # approve
+        $api->get('/dishes', 'App\Http\Controllers\DishController@index')->name('dish_index'); # index
+        $api->post('/dishes', 'App\Http\Controllers\DishController@store')->name('dish_store'); # store
+        $api->get('/dishes/{dish}', 'App\Http\Controllers\DishController@show')->name('dish_show'); # show
+        $api->put('/dishes/{dish}', 'App\Http\Controllers\DishController@update')->name('dish_update'); # update
+        $api->delete('/dishes/{dish}', 'App\Http\Controllers\DishController@destroy')->name('dish_delete'); # delete
+        $api->get('/dishes/{dish}/approve', 'App\Http\Controllers\DishController@approve')->name('dish_approve'); # approve
     });
-//    $api->get('/admin', function () {});
     $api->group([], function (\Dingo\Api\Routing\Router $api) {
         $api->get('/user', 'App\Http\Controllers\AuthController@me')->name('me');
+        $api->post('/user', 'App\Http\Controllers\AuthController@register')->name('register');
         $api->post('/user/login', 'App\Http\Controllers\AuthController@login')->name('login');
         $api->post('/user/logout', 'App\Http\Controllers\AuthController@logout')->name('logout');
         $api->get('/user/refresh', 'App\Http\Controllers\AuthController@refresh')->name('refresh');
@@ -36,18 +36,3 @@ $api->version('v1', function(\Dingo\Api\Routing\Router $api) {
         $api->get('/user/calories_intake', 'App\Http\Controllers\AuthController@calculateDailyCaloriesIntake')->name('calories_daily_intake');
     });
 });
-
-/*
-Route::group(['middleware' => ['api.auth']], function() {
-    Route::group([], function() {
-        Route::any('/', ['as' => 'p', 'uses' => 'App\Http\Controllers\UserController@getMealPlan']);
-    });
-    Route::get('/admin', function() {});
-    Route::group(['prefix' => 'auth'], function() {
-        Route::post('/login', 'AuthController@login')->name('index');
-        Route::get('/refresh', 'AuthController@refresh')->name('refresh');
-        Route::get('/me', 'AuthController@me')->name('me');
-    });
-});
-# Route::post('auth/logout', 'AuthController@logout')->name('logout');
-*/

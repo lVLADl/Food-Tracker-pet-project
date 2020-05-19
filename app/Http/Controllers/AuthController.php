@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Dish;
+use App\Http\Requests\UserRegisterRequest;
 use Carbon\Carbon;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 
 class AuthController extends BaseController
 {
@@ -19,7 +17,15 @@ class AuthController extends BaseController
      */
     public function __construct()
     {
-        $this->middleware('api.auth', ['except' => ['login']]);
+        $this->middleware('api.auth', ['except' => ['login', 'register']]);
+    }
+
+    /**
+     * @return array
+     * Register user
+     */
+    public function register(UserRegisterRequest $request) {
+        return \App\Models\User::create($request->all());
     }
 
     /**
@@ -28,7 +34,6 @@ class AuthController extends BaseController
      */
     public function getMealPlan(Request $request) {
         return $this->auth->user()->meal_plan;
-//        return redirect(app('Dingo\Api\Routing\UrlGenerator')->version("v1")->route('p'));
     }
 
     /**
@@ -107,7 +112,7 @@ class AuthController extends BaseController
         return [
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60*60*24*7
+            #'expires_in' => auth()->factory()->getTTL() * 60*60*24*7
         ];
     }
 }
