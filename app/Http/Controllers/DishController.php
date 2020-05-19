@@ -7,6 +7,7 @@ use App\Http\Requests\DishUpdateRequest;
 use App\Models\Dish;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class DishController extends BaseController
 {
@@ -76,21 +77,16 @@ class DishController extends BaseController
      */
     public function update(DishUpdateRequest $request, string $dish)
     {
+        $dish = Dish::findOrFail($dish);
         if($request->hasFile('img')) {
             $photo = $request->file('img');
-            $filename = $photo->getClientOriginalName();
             Storage::disk('public')->putFileAs(
                 'food-photos/',
-                $photo, $filename);
-
-            $request['photo'] = $filename;
+                $photo, $filename=Str::uuid().$photo->getClientOriginalName());
+            $request['photo'] = asset('storage/food-photos/'.$filename);
         }
-        $dish = Dish::findOrFail($dish);
         $request['is_approved'] = false;
         $dish->update($request->all());
-        $dish['photo'] = asset('storage/food-photos/'.$dish->photo);
-        $dish->save();
-
         return $dish;
     }
 
@@ -100,8 +96,9 @@ class DishController extends BaseController
      * @param  \App\Models\Dish  $dish
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Dish $dish)
+    public function destroy(string $dish)
     {
-        //
+        $dish = Dish::findOrFail($dish);
+        $dish->delete();
     }
 }
