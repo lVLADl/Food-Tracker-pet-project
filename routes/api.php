@@ -23,6 +23,7 @@ $api->version('v1', function(\Dingo\Api\Routing\Router $api) {
         $api->get('/dishes', 'App\Http\Controllers\DishController@index'); # index
         $api->get('/dishes/{dish}', 'App\Http\Controllers\DishController@show'); # show
         $api->put('/dishes/{dish}', 'App\Http\Controllers\DishController@update'); # update
+        $api->delete('/dishes/{dish}', 'App\Http\Controllers\DishController@destroy'); # delete
         $api->get('/dishes/{dish}/approve', 'App\Http\Controllers\DishController@approve'); # approve
     });
 //    $api->get('/admin', function () {});

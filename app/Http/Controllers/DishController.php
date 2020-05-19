@@ -100,5 +100,7 @@ class DishController extends BaseController
     {
         $dish = Dish::findOrFail($dish);
         $dish->delete();
+
+        return $this->response->noContent();
     }
 }
