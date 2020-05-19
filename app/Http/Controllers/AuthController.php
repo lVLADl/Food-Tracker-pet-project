@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dish;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class AuthController extends BaseController
 {
+    public static $jwt_exp_d = 7;
+
     /**
      * Create a new AuthController instance.
      *
@@ -17,13 +23,33 @@ class AuthController extends BaseController
     }
 
     /**
-     * @return JsonResponse
+     * @return array
+     * Get menu plan
+     */
+    public function getMealPlan(Request $request) {
+        return $this->auth->user()->meal_plan;
+//        return redirect(app('Dingo\Api\Routing\UrlGenerator')->version("v1")->route('p'));
+    }
+
+    /**
+     * @return array
+     * Get menu plan
+     **/
+    public function calculateDailyCaloriesIntake(Request $request) {
+        $user = $this->auth->user();
+        $formula_set = $user->meal_plan->calculateDailyCaloriesIntake();
+
+        return $formula_set;
+    }
+
+    /**
+     * @return array
      * Get a JWT via given credentials.
      */
     public function login()
     {
         $credentials = request(['email', 'password']);
-        if (! $token = auth()->attempt($credentials)) {
+        if (! $token = auth()->attempt($credentials, ['exp' => Carbon::now()->addDays(self::$jwt_exp_d)->timestamp])) {
             return $this->response->errorUnauthorized();
         }
 
@@ -81,7 +107,8 @@ class AuthController extends BaseController
         return [
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'expires_in' => auth()->factory()->getTTL() * 60*60*24*7
         ];
     }
 }
+

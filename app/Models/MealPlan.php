@@ -6,6 +6,33 @@ use Illuminate\Database\Eloquent\Model;
 
 class MealPlan extends Model
 {
+    public static $FORMULAS = null;
+    public static $CURR_CALC_FORMULA = 'MSZ';
+
+    public function calculateDailyCaloriesIntake() {
+        $formula_set = self::$FORMULAS[self::$CURR_CALC_FORMULA]; # Identifying specific formula to be used
+        $formula = $formula_set['function'];
+        $formula_title = $formula_set['title'];
+
+        $result = [
+            'formula_title' => $formula_title,
+            'formula_result' => $formula($this)
+        ];
+        return $result;
+    }
+    protected static function boot()
+    {
+        self::$FORMULAS = [
+            'MSZ' => [
+                'title' => 'Mifflin-St-Jeor',
+                'function' => function(MealPlan $mp) {
+                    return ($mr=((($mp->weight*10)+($mp->height*6.25)-(5*$mp->age)+($mp->sex=='m'?5:-161))*$mp->activity_rate))+(($mp->calories_change*$mr)/100);
+                }
+            ],
+        ];
+        parent::boot();
+    }
+
     public static $SEX = [
         'MEN' => 'm',
         'WOMAN' => 'w',

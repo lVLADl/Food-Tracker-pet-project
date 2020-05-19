@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Dish extends Model
 {
-    # Scopes
+
     public function scopeL($query) {
         return $query;
     }

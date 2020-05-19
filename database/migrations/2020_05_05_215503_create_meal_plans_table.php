@@ -16,7 +16,7 @@ class CreateMealPlansTable extends Migration
         Schema::create('meal_plans', function (Blueprint $table) {
             $table->string('sex');
             $table->float('weight');
-            $table->float('height');
+            $table->float('height')->comment('cm');
             $table->float('weight_goal');
             $table->integer('age');
             $table->float('activity_rate');
