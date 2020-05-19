@@ -3,11 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\DishCreateRequest;
+use App\Http\Requests\DishUpdateRequest;
 use App\Models\Dish;
 use Illuminate\Http\Request;
 
 class DishController extends BaseController
 {
+    /**
+     * Create a new DishController instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('api.auth', ['except' => []]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -29,7 +40,7 @@ class DishController extends BaseController
         $request['user_id'] = $this->auth->user()->id;
         $request['is_approved'] = false;
 
-        Dish::create($request->all());
+        return Dish::create($request->all());
     }
 
     /**
@@ -41,8 +52,7 @@ class DishController extends BaseController
      */
     public function show(Request $request, string $dish)
     {
-        $dish = Dish::findOrFail($dish)->get(['id']);
-        return $dish;
+        return Dish::findOrFail($dish);
     }
 
     public function approve(string $dish)
@@ -59,13 +69,19 @@ class DishController extends BaseController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Dish  $dish
+     * @param  DishUpdateRequest  $request
+     * @param  string  $dish
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Dish $dish)
+    public function update(DishUpdateRequest $request, string $dish)
     {
-        //
+        return $request->all();
+        $dish = Dish::findOrFail($dish);
+        $request['is_approved'] = false;
+        $dish->update($request->all());
+        $dish->save();
+
+        return $dish;
     }
 
     /**

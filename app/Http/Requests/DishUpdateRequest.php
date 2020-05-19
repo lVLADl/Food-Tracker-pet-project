@@ -2,11 +2,12 @@
 
 namespace App\Http\Requests;
 
+use Dingo\Api\Exception\UpdateResourceFailedException;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Dingo\Api\Exception\StoreResourceFailedException;
 
-class DishCreateRequest extends FormRequest
+class DishUpdateRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -16,12 +17,12 @@ class DishCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|string',
+            'title' => 'nullable|string',
             'photo' => 'nullable|image',
-            'calories' => 'required|numeric',
-            'proteins' => 'required|numeric',
-            'fats' => 'required|numeric',
-            'carbohydrates' => 'required|numeric',
+            'calories' => 'nullable|numeric',
+            'proteins' => 'nullable|numeric',
+            'fats' => 'nullable|numeric',
+            'carbohydrates' => 'nullable|numeric',
         ];
     }
 
@@ -31,6 +32,6 @@ class DishCreateRequest extends FormRequest
      * @return array
      */
     public function failedValidation(Validator $validator) {
-        throw new StoreResourceFailedException('Could not create new user.', $validator->errors());
+        throw new UpdateResourceFailedException('Could not create new user.', $validator->errors());
     }
 }

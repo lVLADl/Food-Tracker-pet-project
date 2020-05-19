@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Dish extends Model
 {
-
+    public $fillable = ['title', 'calories', 'proteins', 'fats', 'carbohydrates', 'photo', 'user_id', 'is_approved'];
     public function scopeL($query) {
         return $query;
     }

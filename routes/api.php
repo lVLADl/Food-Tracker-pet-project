@@ -19,12 +19,13 @@ $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', function(\Dingo\Api\Routing\Router $api) {
     $api->group([], function (\Dingo\Api\Routing\Router $api) {
-        $api->get('/dishes', 'App\Http\Controllers\DishController@index'); # index
         $api->post('/dishes', 'App\Http\Controllers\DishController@store'); # store
+        $api->get('/dishes', 'App\Http\Controllers\DishController@index'); # index
         $api->get('/dishes/{dish}', 'App\Http\Controllers\DishController@show'); # show
+        $api->put('/dishes/{dish}', 'App\Http\Controllers\DishController@update'); # update
         $api->get('/dishes/{dish}/approve', 'App\Http\Controllers\DishController@approve'); # approve
     });
-    $api->get('/admin', function () {});
+//    $api->get('/admin', function () {});
     $api->group([], function (\Dingo\Api\Routing\Router $api) {
         $api->get('/user', 'App\Http\Controllers\AuthController@me')->name('me');
         $api->post('/user/login', 'App\Http\Controllers\AuthController@login')->name('login');
