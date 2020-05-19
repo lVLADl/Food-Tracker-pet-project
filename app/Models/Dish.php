@@ -10,7 +10,7 @@ class Dish extends Model
     public function scopeL($query) {
         return $query;
     }
-    public function scopeApproved($query, bool $isApproved = true) {
-        return $query->where('is_approved', (int) $isApproved);
+    public function scopeApproved($query) {
+        return $query->where('is_approved', true);
     }
 }

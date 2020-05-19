@@ -6,6 +6,7 @@ use App\Http\Requests\DishCreateRequest;
 use App\Http\Requests\DishUpdateRequest;
 use App\Models\Dish;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -22,16 +23,22 @@ class DishController extends BaseController
     }
 
     /**
-     * Display a listing of all the approved dishes.
+     * [User] Display a listing of all the approved dishes.
+     * [Admin] Display a listing of all the dishes
      *
-     * @return Dish
+     * @GET-parameter [unapproved]: display either unapproved as approved dishes created by the authenticated user
+     * @return Collection
      */
-    public function index()
+    public function index(Request $request)
     {
         if($this->auth->user()->hasRole('Admin')) {
             return Dish::all();
         } else {
-            return Dish::approved()->get();
+            if($request->has('unapproved')) {
+                return Dish::all()->where('user_id', $this->auth->user()->id);
+            } else {
+                return Dish::approved()->get();
+            }
         }
     }
 

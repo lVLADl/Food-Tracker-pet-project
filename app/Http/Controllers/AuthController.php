@@ -38,7 +38,7 @@ class AuthController extends BaseController
 
     /**
      * @return array
-     * Get menu plan
+     * Get personal day-long calories-intake
      **/
     public function calculateDailyCaloriesIntake(Request $request) {
         $user = $this->auth->user();
