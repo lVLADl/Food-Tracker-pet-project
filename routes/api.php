@@ -18,6 +18,8 @@ $api = app('Dingo\Api\Routing\Router');
 
 
 $api->version('v1', function(\Dingo\Api\Routing\Router $api) {
+
+    # Dish
     $api->group([], function (\Dingo\Api\Routing\Router $api) {
         $api->get('/dishes', 'App\Http\Controllers\DishController@index')->name('dish_index'); # index
         $api->post('/dishes', 'App\Http\Controllers\DishController@store')->name('dish_store'); # store
@@ -30,6 +32,14 @@ $api->version('v1', function(\Dingo\Api\Routing\Router $api) {
 
         $api->get('/dishes/{dish}/approve', 'App\Http\Controllers\DishController@approve')->name('dish_approve')->middleware(['role:Admin']); # approve
     });
+
+    # Meals TODO: finish meal's-module
+    $api->group(['middleware' => ['api.auth', ]], function (\Dingo\Api\Routing\Router $api) {
+        $api->get('/meals', 'App\Http\Controllers\MealController@index');
+        $api->get('/meals/{meal}', 'App\Http\Controllers\MealController@show');
+    });
+
+    # User
     $api->group([], function (\Dingo\Api\Routing\Router $api) {
         $api->get('/user', 'App\Http\Controllers\AuthController@me')->name('me');
         $api->post('/user', 'App\Http\Controllers\AuthController@register')->name('register');

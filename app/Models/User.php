@@ -43,6 +43,12 @@ class User extends Authenticatable implements JWTSubject
     public function meal_plan() {
         return $this->hasOne(MealPlan::class, 'user_id', 'id');
     }
+    public function meals() {
+        return $this->hasMany(Meal::class);
+    }
+    public function dishes() {
+        return $this->hasMany(Dish::class);
+    }
 
 
     public function get_meals(Carbon $date = null){
