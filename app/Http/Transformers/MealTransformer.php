@@ -19,14 +19,17 @@ class MealTransformer extends TransformerAbstract
         $user = $user_transformer->transform($meal->user);
 
         return [
+            # Relations
             'dish' => $dish,
             'user' => $user,
 
+            # Calculations
             'total_calories' => $meal->weight * $meal->dish->calories / 100,
             'total_proteins' => $meal->weight * $meal->dish->proteins / 100,
             'total_fats' => $meal->weight * $meal->dish->fats / 100,
             'total_carbohydrates' => $meal->weight * $meal->dish->carbohydrates / 100,
 
+            # Timestamps
             'created_at' => $meal->created_at,
             'updated_at' => $meal->updated_at,
         ];
