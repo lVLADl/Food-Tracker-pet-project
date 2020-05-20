@@ -18,7 +18,8 @@ class MealSeeder extends Seeder
             $dish_id = $query->where('title', $title)->first()->id;
             \App\Models\Meal::create([
                 'dish_id' => $dish_id,
-                'user_id' => $user_id
+                'user_id' => $user_id,
+                'weight' => random_int(5, 1000),
             ]);
         }
     }

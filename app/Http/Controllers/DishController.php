@@ -7,6 +7,7 @@ use App\Http\Requests\DishUpdateRequest;
 use App\Models\Dish;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -32,7 +33,12 @@ class DishController extends BaseController
     public function index(Request $request)
     {
         if($this->auth->user()->hasRole('Admin')) {
-            return Dish::all();
+            if($request->has('unapproved')) {
+                return Dish::all()->where('is_approved', false);
+            }
+            else {
+                return Dish::approved()->get();
+            }
         } else {
             if($request->has('unapproved')) {
                 return Dish::all()->where('user_id', $this->auth->user()->id);

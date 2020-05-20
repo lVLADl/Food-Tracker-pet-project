@@ -21,10 +21,14 @@ $api->version('v1', function(\Dingo\Api\Routing\Router $api) {
     $api->group([], function (\Dingo\Api\Routing\Router $api) {
         $api->get('/dishes', 'App\Http\Controllers\DishController@index')->name('dish_index'); # index
         $api->post('/dishes', 'App\Http\Controllers\DishController@store')->name('dish_store'); # store
-        $api->get('/dishes/{dish}', 'App\Http\Controllers\DishController@show')->name('dish_show'); # show
-        $api->put('/dishes/{dish}', 'App\Http\Controllers\DishController@update')->name('dish_update'); # update
-        $api->delete('/dishes/{dish}', 'App\Http\Controllers\DishController@destroy')->name('dish_delete'); # delete
-        $api->get('/dishes/{dish}/approve', 'App\Http\Controllers\DishController@approve')->name('dish_approve'); # approve
+
+        $api->group(['middleware' => ['dish_access']], function(\Dingo\Api\Routing\Router $api) { #
+            $api->get('/dishes/{dish}', 'App\Http\Controllers\DishController@show')->name('dish_show'); # show
+            $api->put('/dishes/{dish}', 'App\Http\Controllers\DishController@update')->name('dish_update'); # update
+            $api->delete('/dishes/{dish}', 'App\Http\Controllers\DishController@destroy')->name('dish_delete'); # delete
+        });
+
+        $api->get('/dishes/{dish}/approve', 'App\Http\Controllers\DishController@approve')->name('dish_approve')->middleware(['role:Admin']); # approve
     });
     $api->group([], function (\Dingo\Api\Routing\Router $api) {
         $api->get('/user', 'App\Http\Controllers\AuthController@me')->name('me');

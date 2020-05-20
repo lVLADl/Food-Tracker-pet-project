@@ -16,7 +16,7 @@ class UserSeeder extends Seeder
                 'name' => 'admin',
                 'email' => 'admin@gmail.com',
                 'password' => bcrypt('manager_passd_456')
-            ])->assignRole('Admin');
+            ])->assignRole(\Spatie\Permission\Models\Role::findOrCreate('Admin'));
         }
         if(\App\Models\User::all()->where('email', 'user@gmail.com')->count() == 0) {
             \App\Models\User::create([
