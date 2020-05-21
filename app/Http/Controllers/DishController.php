@@ -57,6 +57,13 @@ class DishController extends BaseController
     {
         $request['user_id'] = $this->auth->user()->id;
         $request['is_approved'] = false;
+        if($request->hasFile('img')) {
+            $photo = $request->file('img');
+            Storage::disk('public')->putFileAs(
+                'food-photos/',
+                $photo, $filename=Str::uuid().$photo->getClientOriginalName());
+            $request['photo'] = asset('storage/food-photos/'.$filename);
+        }
 
         return Dish::create($request->all());
     }
@@ -103,6 +110,8 @@ class DishController extends BaseController
         }
         $request['is_approved'] = false;
         $dish->update($request->all());
+
+
         return $dish;
     }
 

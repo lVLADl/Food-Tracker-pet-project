@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MealCreateRequest;
 use App\Http\Transformers\MealTransformer;
+use App\Models\Dish;
 use App\Models\Meal;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class MealController extends BaseController
 {
@@ -62,7 +66,6 @@ class MealController extends BaseController
                 foreach ($f_date as $date_part) {
                     $query = parse_date_part($query, (string) $date_part);
                 }
-                # return Meal::whereMonth('created_at', 05)->whereDay('created_at', '20')->where('dish_id', '3')->orderByDesc('id')->get();
             }
             $query = collect($query->get());
 
@@ -265,9 +268,12 @@ class MealController extends BaseController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(MealCreateRequest $request)
     {
-        //
+        $request['user_id'] = $this->auth->user()->id;
+        $meal = Meal::create($request->all());
+
+        return $this->response->item($meal, new MealTransformer);
     }
 
     /**
@@ -289,9 +295,11 @@ class MealController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, string $meal)
     {
-        //
+        $meal = Meal::findOrFail($meal);
+        $meal->update($request->all());
+        return $this->response->item($meal, new MealTransformer);
     }
 
     /**

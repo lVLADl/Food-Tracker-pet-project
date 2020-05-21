@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\VerifyDishRightsMiddleware;
+use App\Http\Middleware\VerifyMealRightsMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -65,6 +66,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
 
         'dish_access' => VerifyDishRightsMiddleware::class,
+        'meal_access' => VerifyMealRightsMiddleware::class,
 
         /*
          * |---------------------------------------------

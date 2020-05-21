@@ -16,12 +16,12 @@ class MealTransformer extends TransformerAbstract
         $dish_transformer = new DishTransformer;
 
         $dish = $dish_transformer->transform($meal->dish);
-        $user = $user_transformer->transform($meal->user);
 
         return [
+            'id' => $meal->id,
+            
             # Relations
             'dish' => $dish,
-            # 'user' => $user,
 
             # Calculations
             'total_calories' => $meal->weight * $meal->dish->calories / 100,

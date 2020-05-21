@@ -30,6 +30,5 @@ class DishTransformer extends TransformerAbstract
             'created_at' => $dish->created_at,
             'updated_at' => $dish->updated_at,
         ];
-        return $dish->toArray();
     }
 }

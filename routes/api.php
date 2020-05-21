@@ -33,10 +33,15 @@ $api->version('v1', function(\Dingo\Api\Routing\Router $api) {
         $api->get('/dishes/{dish}/approve', 'App\Http\Controllers\DishController@approve')->name('dish_approve')->middleware(['role:Admin']); # approve
     });
 
-    # Meals TODO: finish meal's-module
+    # Meals
     $api->group(['middleware' => ['api.auth', ]], function (\Dingo\Api\Routing\Router $api) {
         $api->get('/meals', 'App\Http\Controllers\MealController@index');
-        $api->get('/meals/{meal}', 'App\Http\Controllers\MealController@show');
+        $api->post('/meals', 'App\Http\Controllers\MealController@store');
+        $api->group(['middlewares' => ['meal_access']], function(\Dingo\Api\Routing\Router $api) {
+            $api->get('/meals/{meal}', 'App\Http\Controllers\MealController@show');
+            $api->put('/meals/{meal}', 'App\Http\Controllers\MealController@update');
+            $api->delete('/meals/{meal}', 'App\Http\Controllers\MealController@destroy');
+        });
     });
 
     # User
