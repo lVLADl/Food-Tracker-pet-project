@@ -21,7 +21,7 @@ class MealTransformer extends TransformerAbstract
         return [
             # Relations
             'dish' => $dish,
-            'user' => $user,
+            # 'user' => $user,
 
             # Calculations
             'total_calories' => $meal->weight * $meal->dish->calories / 100,
