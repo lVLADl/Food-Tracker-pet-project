@@ -25,6 +25,7 @@ class MealController extends BaseController
      * [2]="title"
      * [3]="approved"
      * [4]="[calories/proteins/fats/carbohydrates]_[exact/gt/gte/lt/lte]" (greater then, greater then or equal, ...) Example= proteins_gte=120.0
+     * [5]="total_[calories/proteins/fats/carbohydrates]_[exact/gt/gte/lt/lte]" (greater then, greater then or equal, ...) Example= total_proteins_exact=88.0
      *
      * @return \Illuminate\Http\Response
      */
@@ -251,6 +252,8 @@ class MealController extends BaseController
                     });
                 }
 
+        } else {
+            $query = collect($query->get());
         }
         # General response ( one for all method)
         return $this->response->collection($query, new MealTransformer);
